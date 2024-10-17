@@ -1,3 +1,4 @@
+![gg1](https://github.com/user-attachments/assets/c746cdaa-bb86-40d5-b9c9-29ac65bbeacd)
 # FYP Project Title
 Renawable Energy Investment platform utilize by blockchain technologies
 
