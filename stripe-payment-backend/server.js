@@ -13,7 +13,7 @@ const port = 4242;
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://badrulhaikal296:badrul123@renewableenergyplatform.e674w9c.mongodb.net/sample_mflix?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://password:DB_ID.e674w9c.mongodb.net/sample_mflix?retryWrites=true&w=majority')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
