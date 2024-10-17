@@ -64,7 +64,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 - List any resources, tutorials, or references you used here.
-- Thanks to anyone who helped or contributed to the project.
+- Thanks to Ts Umapathy for being my supervisor.
 - Copyright 2024 Badrul Haikal Iman (FYP PURPOSES) TP061466 APU
   
 ## ENERGIES Project
