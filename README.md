@@ -61,6 +61,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - List any resources, tutorials, or references you used here.
 - Thanks to anyone who helped or contributed to the project.
 - Copyright 2024 Badrul Haikal Iman (FYP PURPOSES) TP061466 APU
-=======
+- 
 # ENERGIES
 FYP PROJECT
