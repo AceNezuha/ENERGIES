@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Project Title
 Renawable Energy Investment platform utilize by blockchain technologies
 
@@ -63,3 +64,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Thanks to anyone who helped or contributed to the project.
 
 - Copyright 2024 Badrul Haikal Iman (FYP PURPOSES) TP061466 APU
+=======
+# ENERGIES
+FYP PROJECT
+>>>>>>> c59d375cf8e7ad240ba2a779aeceef5d52f8deda
