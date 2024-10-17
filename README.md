@@ -41,6 +41,10 @@ To use the project, follow these steps:
 ### Build for Production with Minification
    npm run build
 
+### Run stripe-payment-backend server
+   open stripe-payment-backend terminal
+   type node server.js
+
 ## Contributing
 To contribute to this project, follow these steps:
 
