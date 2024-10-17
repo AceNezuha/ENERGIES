@@ -1,4 +1,4 @@
-# Project Title
+# FYP Project Title
 Renawable Energy Investment platform utilize by blockchain technologies
 
 ## Description
@@ -62,5 +62,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Thanks to anyone who helped or contributed to the project.
 - Copyright 2024 Badrul Haikal Iman (FYP PURPOSES) TP061466 APU
   
-# ENERGIES
-FYP PROJECT
+## ENERGIES Project
+This project, titled ENERGIES, is part of a Final Year Project (FYP) involving renewable energy investment using blockchain technologies. It incorporates blockchain integration for secure and transparent transactions, as well as payment processing through Stripe Elements, with both hardcoded backend and frontend components.
+
+Copyright 2024 Badrul Haikal Iman
+FYP Purpose
+TP061466, APU
