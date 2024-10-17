@@ -68,3 +68,7 @@ This project, titled ENERGIES, is part of a Final Year Project (FYP) involving r
 Copyright 2024 Badrul Haikal Iman
 FYP Purpose
 TP061466, APU
+
+## PROJECT POSTER
+![Slide1](https://github.com/user-attachments/assets/9e75cfdd-e565-4ed0-9b11-fe466d081130)
+
