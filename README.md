@@ -9,8 +9,7 @@ Key Features:
 - Blockchain Integration: Ensures secure and transparent transactions.
 - Real-Time Notifications: Uses iziToast, Toast, and SweetAlert2 for various notifications related to login, blockchain transactions, and payments.
 - Database Management: Utilizes MongoDB Atlas for scalable and flexible data management.
-- User Interface: Built using Vue.js for a dynamic a
-nd - interactive front end, with Font Awesome icons enhancing the visual appeal.
+- User Interface: Built using Vue.js for a dynamic and - interactive front end, with Font Awesome icons enhancing the visual appeal.
 - Secure Payment Processing: Integrated with Stripe API for handling payments securely.
 - Password Security: Implements jBcrypt for password hashing to ensure user data protection.
 - Role-Based Access Control: Uses middleware to differentiate between user and admin roles, managing access control effectively.
@@ -61,7 +60,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 - List any resources, tutorials, or references you used here.
 - Thanks to anyone who helped or contributed to the project.
-
 - Copyright 2024 Badrul Haikal Iman (FYP PURPOSES) TP061466 APU
 =======
 # ENERGIES
