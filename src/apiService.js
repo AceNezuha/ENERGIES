@@ -1,44 +1,51 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/auth';
+const BASE_URL = process.env.VUE_APP_API || 'http://localhost:3000';
+const AUTH_URL = `${BASE_URL}/auth`;
+const ADMIN_URL = `${BASE_URL}/admin`;
 
 const apiService = {
+  // Auth
   login(credentials) {
-    return axios.post(`${API_URL}/login`, credentials);
+    return axios.post(`${AUTH_URL}/login`, credentials);
   },
   signup(user) {
-    return axios.post(`${API_URL}/signup`, user);
+    return axios.post(`${AUTH_URL}/signup`, user);
   },
   getUserProfile(token) {
-    return axios.get(`${API_URL}/profile`, {
+    return axios.get(`${AUTH_URL}/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   },
   updateUserProfile(token, userData) {
-    return axios.put(`${API_URL}/profile`, userData, {
+    return axios.put(`${AUTH_URL}/profile`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   },
   uploadProfilePicture(token, formData) {
-    return axios.post(`${API_URL}/uploadProfilePicture`, formData, {
+    return axios.post(`${AUTH_URL}/uploadProfilePicture`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     });
   },
+
+  // User Transactions
   getTransactions(username) {
-    return axios.get(`http://localhost:3000/transactions/${username}`);
+    return axios.get(`${BASE_URL}/transactions/${username}`);
   },
+
+  // Admin Panel
   getAllTransactions() {
-    return axios.get(`http://localhost:3000/admin/transactions`);
+    return axios.get(`${ADMIN_URL}/transactions`);
   },
   getPaymentsByTxHash(txHash) {
-    return axios.get(`http://localhost:3000/admin/payments/${txHash}`);
+    return axios.get(`${ADMIN_URL}/payments/${txHash}`);
   }
 };
 
