@@ -3,30 +3,21 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const mongoose = require('mongoose');
+require('./db'); // ✅ MongoDB connection
+
 const authRoutes = require('./auth');
 const adminRoutes = require('./routes/admin');
 const contactRoutes = require('./routes/contact');
-const Payment = require('./models/payment'); // Import the Payment model
+const Payment = require('./models/payment');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// ✅ Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    appName: "ENERGIES"
-  })
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // ✅ CORS setup
 const corsOptions = {
   origin: [
     'http://localhost:8080',
-    'https://acenezuha.github.io' // Replace with your actual frontend GitHub Pages URL
+    'https://acenezuha.github.io' // ✅ allow GitHub Pages frontend
   ],
   credentials: true
 };
