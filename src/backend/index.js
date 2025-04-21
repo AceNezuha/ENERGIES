@@ -4,10 +4,10 @@ const path = require('path');
 require('dotenv').config();
 
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./auth');
 const adminRoutes = require('./routes/admin');
 const contactRoutes = require('./routes/contact');
-const Payment = require('./models/Payment'); // Adjust this path if needed
+const Payment = require('./models/payment'); // Import the Payment model
 
 const app = express();
 const port = process.env.PORT || 3000;
