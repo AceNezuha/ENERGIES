@@ -5,9 +5,9 @@ const multer = require('multer');
 const path = require('path');
 const crypto = require('crypto');
 const User = require('./models/user');
-
 const router = express.Router();
 
+// === Multer Setup ===
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -16,9 +16,9 @@ const storage = multer.diskStorage({
     cb(null, 'profilePicture-' + Date.now() + path.extname(file.originalname));
   }
 });
-
 const upload = multer({ storage: storage });
 
+// === Login ===
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -26,18 +26,23 @@ router.post('/login', async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-    const token = jwt.sign({ id: user._id, username: user.username, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: user._id, username: user.username, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 });
 
+// === Signup ===
 router.post('/signup', async (req, res) => {
   const { name, email, username, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const secretKey = crypto.randomBytes(20).toString('hex'); // Generate a random secret key
+    const secretKey = crypto.randomBytes(20).toString('hex');
     const user = new User({
       name,
       email,
@@ -52,6 +57,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// === Forgot Password ===
 router.post('/forgot-password', async (req, res) => {
   const { email, secretKey, newPassword } = req.body;
   try {
@@ -67,11 +73,17 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
+// === Get Profile ===
 router.get('/profile', async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  const token = authHeader.split(' ')[1];
+
   try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    const user = await User.findById(decoded.id, '-password'); // Exclude password field
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -81,17 +93,25 @@ router.get('/profile', async (req, res) => {
   }
 });
 
+// === Update Profile ===
 router.put('/profile', async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const { name, firstName, lastName, email, username, phone, bio, country, cityState, postalCode, taxId } = req.body;
-  try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  const token = authHeader.split(' ')[1];
 
-    // Update user information
+  const {
+    name, firstName, lastName, email, username,
+    phone, bio, country, cityState, postalCode, taxId
+  } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Update fields
     user.name = name || user.name;
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
@@ -111,16 +131,23 @@ router.put('/profile', async (req, res) => {
   }
 });
 
+// === Upload Profile Picture ===
 router.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
     user.profilePicture = `/uploads/${req.file.filename}`;
     await user.save();
+
     res.json({ message: 'Profile picture uploaded successfully', profilePicture: user.profilePicture });
   } catch (error) {
     res.status(401).json({ message: 'Unauthorized', error });
