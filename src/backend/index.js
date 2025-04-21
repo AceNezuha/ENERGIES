@@ -1,33 +1,46 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./db');
-const mongoose = require('mongoose');
 const path = require('path');
-const authRoutes = require('./auth');
-const Payment = require('./models/payment'); // Import the Payment model
+require('dotenv').config();
+
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
-const contactRoutes = require('./routes/contact'); // Import the contact routes
+const contactRoutes = require('./routes/contact');
+const Payment = require('./models/Payment'); // Adjust this path if needed
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Configure CORS options
+// ✅ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    appName: "ENERGIES"
+  })
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
+
+// ✅ CORS setup
 const corsOptions = {
-  origin: 'http://localhost:8080', // Replace with your frontend's URL
-  optionsSuccessStatus: 200,
+  origin: [
+    'http://localhost:8080',
+    'https://acenezuha.github.io' // Replace with your actual frontend GitHub Pages URL
+  ],
   credentials: true
 };
 
-// Use CORS with the configured options
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
+// ✅ Routes
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/contact', contactRoutes);
 
-// Route to get user-specific transactions
+// ✅ Transaction route
 app.get('/transactions/:username', async (req, res) => {
   const { username } = req.params;
   try {
@@ -38,6 +51,12 @@ app.get('/transactions/:username', async (req, res) => {
   }
 });
 
+// ✅ Root health check
+app.get('/', (req, res) => {
+  res.send('🚀 Energies backend is up and running!');
+});
+
+// ✅ Start server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`🚀 Server is running on port ${port}`);
 });
