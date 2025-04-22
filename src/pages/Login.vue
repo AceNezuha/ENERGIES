@@ -107,6 +107,8 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
+const API = process.env.VUE_APP_API || 'http://localhost:3000';
+
 export default {
   data() {
     return {
@@ -160,16 +162,14 @@ export default {
     },
     async handleSignIn() {
       try {
-        const response = await fetch('http://localhost:3000/auth/login', {
+        const response = await fetch(`${API}/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(this.signInData),
         });
-        if (!response.ok) {
-          throw new Error('Login failed');
-        }
+        if (!response.ok) throw new Error('Login failed');
         const data = await response.json();
         localStorage.setItem('token', data.token);
         const user = JSON.parse(atob(data.token.split('.')[1]));
@@ -181,11 +181,7 @@ export default {
           position: 'topRight'
         });
         setTimeout(() => {
-          if (user.role === 'admin') {
-            this.$router.push('/admin');
-          } else {
-            this.$router.push('/dashboard');
-          }
+          this.$router.push(user.role === 'admin' ? '/admin' : '/dashboard');
         }, 1200);
       } catch (error) {
         console.error(error);
@@ -198,32 +194,20 @@ export default {
     },
     async handleSignUp() {
       if (!this.isValidEmail(this.signUpData.email)) {
-        iziToast.error({
-          title: 'Error',
-          message: 'Please enter a valid email address.',
-          position: 'topRight'
-        });
-        return;
+        return iziToast.error({ title: 'Error', message: 'Please enter a valid email address.', position: 'topRight' });
       }
       if (this.signUpData.password.length < 6) {
-        iziToast.error({
-          title: 'Error',
-          message: 'Password must be at least 6 characters long.',
-          position: 'topRight'
-        });
-        return;
+        return iziToast.error({ title: 'Error', message: 'Password must be at least 6 characters long.', position: 'topRight' });
       }
       try {
-        const response = await fetch('http://localhost:3000/auth/signup', {
+        const response = await fetch(`${API}/auth/signup`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(this.signUpData),
         });
-        if (!response.ok) {
-          throw new Error('Sign up failed');
-        }
+        if (!response.ok) throw new Error('Sign up failed');
         const data = await response.json();
         this.showSecretKeyModal(data.secretKey);
         iziToast.success({
@@ -233,10 +217,7 @@ export default {
           position: 'topRight'
         });
         setTimeout(() => {
-          this.signUpData.name = '';
-          this.signUpData.email = '';
-          this.signUpData.username = '';
-          this.signUpData.password = '';
+          this.signUpData = { name: '', email: '', username: '', password: '' };
           this.toggleSignUp(false);
         }, 2000);
       } catch (error) {
@@ -250,16 +231,14 @@ export default {
     },
     async handleForgotPassword() {
       try {
-        const response = await fetch('http://localhost:3000/auth/forgot-password', {
+        const response = await fetch(`${API}/auth/forgot-password`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(this.forgotPasswordData),
         });
-        if (!response.ok) {
-          throw new Error('Reset password failed');
-        }
+        if (!response.ok) throw new Error('Reset password failed');
         iziToast.success({
           title: 'Success',
           message: 'Password reset successfully. Please log in with your new password.',
@@ -285,8 +264,7 @@ export default {
     redirectToOAuth(provider) {
       let oauthUrl = '';
       const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
-
-      switch(provider) {
+      switch (provider) {
         case 'facebook':
           oauthUrl = `https://www.facebook.com/v10.0/dialog/oauth?client_id=YOUR_FACEBOOK_APP_ID&redirect_uri=${redirectUri}&scope=email`;
           break;
@@ -299,7 +277,6 @@ export default {
         default:
           console.error('Unsupported OAuth provider');
       }
-
       window.location.href = oauthUrl;
     },
     togglePasswordVisibility() {
@@ -333,6 +310,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
