@@ -107,7 +107,7 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-const API = process.env.VUE_APP_API || 'http://localhost:3000';
+const API = 'https://energies-backend-6k92.onrender.com';
 
 export default {
   data() {
