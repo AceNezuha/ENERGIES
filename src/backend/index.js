@@ -19,7 +19,7 @@ const corsOptions = {
     'http://localhost:8080',
     'https://acenezuha.github.io' // ✅ allow GitHub Pages frontend
   ],
-  credentials: true
+  //credentials: true
 };
 
 app.use(cors(corsOptions));
