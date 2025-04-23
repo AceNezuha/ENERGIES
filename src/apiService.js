@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.VUE_APP_API || 'http://localhost:3000';
+
+const BASE_URL = 'https://energies-backend-6k92.onrender.com';
 const AUTH_URL = `${BASE_URL}/auth`;
 const ADMIN_URL = `${BASE_URL}/admin`;
 
